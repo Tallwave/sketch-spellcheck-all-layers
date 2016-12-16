@@ -1,4 +1,4 @@
-# Spell Check This Page
+# Spell Check Whole Page
 Run spell check on all text layers in the page.
 
 Displays a list of all text that has a spelling error and the misspelled word.
@@ -13,8 +13,13 @@ Spell check isn't available for all text layers at a time. If you're using sketc
 
 Here’s a screen capture of the plugin in action:
 
-## Special thanks to (Aby Nimbalkar)[https://github.com/abynim], who's (select layers of type gist)[https://gist.github.com/abynim/04f88d5e4fe47118bfe3#file-sketch-plugin-snippet-select-layers-of-type-js] started me off in creating this plugin
+## Special thanks
 
-## TODO:
+Special thanks to (Aby Nimbalkar)[https://github.com/abynim], who's (select layers of type gist)[https://gist.github.com/abynim/04f88d5e4fe47118bfe3#file-sketch-plugin-snippet-select-layers-of-type-js] started me off in creating this plugin
+
+## Next Steps:
 
 Next steps are to loop this in to the built-in spelling window to allow people to natively find and replace the misspelled text. But this is a start anyway!
+
+- Allow replacing of misspelled text
+- Implement skipping through text layers one-by-one
