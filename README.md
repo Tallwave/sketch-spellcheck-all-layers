@@ -13,6 +13,8 @@ Spell check isn't available for all text layers at a time. If you're using sketc
 
 Here’s a screen capture of the plugin in action:
 
+<img src="images/alert-screenshot.png" alt="Screenshot of plugin's alert">
+
 ## Special thanks
 
 Special thanks to [Aby Nimbalkar](https://github.com/abynim), who's [select layers of type gist](https://gist.github.com/abynim/04f88d5e4fe47118bfe3#file-sketch-plugin-snippet-select-layers-of-type-js) started me off in creating this plugin
