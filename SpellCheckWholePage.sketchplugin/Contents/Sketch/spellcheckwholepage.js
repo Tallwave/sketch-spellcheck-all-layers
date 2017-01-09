@@ -1,6 +1,7 @@
 function onRun(context) {
+    sketch = context.api();
     //[[[NSSpellChecker sharedSpellChecker] spellingPanel] makeKeyAndOrderFront:nil] //This opens the spelling panel, but isn't usable as of now.
-log([[NSSpellChecker sharedSpellChecker] spellingPanel])
+    //log([[NSSpellChecker sharedSpellChecker] spellingPanel])
     var doc = context.document
       // Filter layers using NSPredicate
     	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
@@ -26,10 +27,14 @@ log([[NSSpellChecker sharedSpellChecker] spellingPanel])
               allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
               misspellingcount ++;
               //[[NSSpellChecker sharedSpellChecker] updateSpellingPanelWithMisspelledWord:misSpelledWord] // Updates the spell checker window with the misspelled word. Since we can't update the text yet, this isn't helpful, so it's commented out.
+
+              //NOTE: There's a possibility we could use the getSelectionFromUser method from the Sketch Javascript API to give a list of options such as "skip, add to dictionary, replace with..."
+              //Documetntation here: http://developer.sketchapp.com/reference/api/class/api/Application.js~Application.html#instance-method-alert
             }
 
     	}
       //Builds our little alert
-      allWords = allWords + "\nFound "+misspellingcount+" misspellings in "+[layers count]+" text layers";
-      [[NSApplication sharedApplication] displayDialog:allWords]
+      //allWords = allWords + "\nFound "+misspellingcount+" misspellings in "+[layers count]+" text layers";
+      //[[NSApplication sharedApplication] displayDialog:allWords withTitle:"Spellcheck Whole Page"]
+      sketch.alert("Found "+misspellingcount+" misspellings in "+[layers count]+" text layers", allWords)
 }
