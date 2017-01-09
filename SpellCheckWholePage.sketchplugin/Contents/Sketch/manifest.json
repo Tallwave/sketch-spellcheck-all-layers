@@ -1,7 +1,7 @@
 {
     "name": "Spell Check Whole Page",
     "identifier": "com.ethology-co.spellcheckwholepage",
-    "version": "0.5",
+    "version": "0.9",
     "description": "Spell Check the entire page",
     "authorEmail": "info@ethology.com",
     "author": "Ethology",
