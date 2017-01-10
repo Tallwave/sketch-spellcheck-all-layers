@@ -46,15 +46,13 @@ function onRun(context) {
 
       var alert = NSAlert.alloc().init();
 
-      alert.setMessageText('Alert Title');
-      //alert.setInformativeText('Alert Text');
-      //alert.addButtonWithTitle('OK');
-      //alert.addButtonWithTitle('Cancel');
+      alert.setMessageText('Spell Check Whole Page');
+      alert.addButtonWithTitle('Skip'); //We must have a button here, so Skip makes the most sense.
       //alert.setIcon(NSImage.alloc().initWithContentsOfFile(
       //    context.plugin.urlForResourceNamed('DialogIcon512.png').path()));
       var nibui = new NibUI(context,
           'UIBundle', 'SpellCheckWholePage',
-          ['textMisSpelling', 'replaceComboBox', 'btnSkip', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
+          ['textMisSpelling', 'replaceComboBox', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
 
       alert.setAccessoryView(nibui.view);
 
@@ -87,11 +85,6 @@ function onRun(context) {
           nibui.attachTargetAndAction(nibui.btnIgnoreAll, function(){
             // Use spell checking API for this //https://developer.apple.com/reference/appkit/nsspellchecker?language=objc
             [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: documentTag]
-            app.stopModal();
-          });
-
-          nibui.attachTargetAndAction(nibui.btnSkip, function() {
-            // Next!
             app.stopModal();
           });
 
