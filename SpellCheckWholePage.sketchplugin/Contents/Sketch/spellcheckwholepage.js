@@ -19,7 +19,6 @@ function onRun(context) {
   var allWords = "";
   var misspellingcount = 0;
   var stopChecking = false;
-  var notReady = true;
   while (layer = [loop nextObject]) {
     if(stopChecking){
       break;
@@ -28,7 +27,6 @@ function onRun(context) {
 
 
     //do spellcheck on each layer
-    var holdItOpen = true;
     var aString = [layer stringValue]
     range = [[NSSpellChecker sharedSpellChecker] checkSpellingOfString:aString startingAt:0];
     if(range.length >0){
@@ -59,12 +57,13 @@ function onRun(context) {
           ['textMisSpelling', 'replaceComboBox', 'btnSkip', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
 
       alert.setAccessoryView(nibui.view);
-/*
+
           //Set up our text
           nibui.textMisSpelling.stringValue = "Mispelling: "+ misSpelledWord;
           nibui.textFullText.stringValue = aString;
 
           //Put guesses into the combobox
+          log(guesses);
           nibui.replaceComboBox.addItemsWithObjectValues( guesses );
 
           //Set up our button functions
@@ -96,11 +95,10 @@ function onRun(context) {
             // Use the NSSpellchecker method.
             [[NSSpellChecker sharedSpellChecker] learnWord: misSpelledWord]
           });
-
           alert.runModal();
 
           nibui.destroy();
-          */
+
         }
       //}
 
