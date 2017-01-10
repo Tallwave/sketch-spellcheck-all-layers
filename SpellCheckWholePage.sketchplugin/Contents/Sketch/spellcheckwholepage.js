@@ -45,60 +45,54 @@ function onRun(context) {
       //alert.setIcon(NSImage.alloc().initWithContentsOfFile(
       //    context.plugin.urlForResourceNamed('DialogIcon512.png').path()));
       var nibui = new NibUI(context,
-          'UIBundle', 'SpellCheckWholePage',
-          ['textMisSpelling', 'replaceComboBox', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
+        'UIBundle', 'SpellCheckWholePage',
+        ['textMisSpelling', 'replaceComboBox', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
 
       alert.setAccessoryView(nibui.view);
 
-          //Set up our text
-          nibui.textMisSpelling.stringValue = "Mispelling: "+ misSpelledWord;
-          nibui.textFullText.stringValue = aString;
+      //Set up our text
+      nibui.textMisSpelling.stringValue = "Mispelling: "+ misSpelledWord;
+      nibui.textFullText.stringValue = aString;
 
-          //Put guesses into the combobox
-          nibui.replaceComboBox.removeAllItems();
-          if (guesses.length >0){
-            nibui.replaceComboBox.addItemsWithObjectValues( guesses );
-            nibui.replaceComboBox.selectItemAtIndex( 0 );
-          }
-          //Set up our button functions
-          nibui.attachTargetAndAction(nibui.btnReplace, function() {
-            //context.document.showMessage('hey');
-            //Do text replace
-            layer.setIsEditingText(true);
-            layer.setStringValue(aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
-            layer.setIsEditingText(false);
-            app.stopModal();
-          });
+      //Put guesses into the combobox
+      nibui.replaceComboBox.removeAllItems();
+      if (guesses.length >0){
+        nibui.replaceComboBox.addItemsWithObjectValues( guesses );
+        nibui.replaceComboBox.selectItemAtIndex( 0 );
+      }
 
-          nibui.attachTargetAndAction(nibui.btnDone, function() {
-            //nibui.exampleLogView.setHidden(nibui.exampleDisclosureButton.state() != NSOnState);
-            // Stop!
-            stopChecking = true;
-            app.stopModal();
-          });
+      //Set up our button functions
+      nibui.attachTargetAndAction(nibui.btnReplace, function() {
+        //Do text replace
+        layer.setIsEditingText(true);
+        layer.setStringValue(aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
+        layer.setIsEditingText(false);
+        app.stopModal();
+      });
 
-          nibui.attachTargetAndAction(nibui.btnIgnoreAll, function(){
-            // Use spell checking API for this //https://developer.apple.com/reference/appkit/nsspellchecker?language=objc
-            [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: 0]
-            app.stopModal();
-          });
+      nibui.attachTargetAndAction(nibui.btnDone, function() {
+        // Stop!
+        stopChecking = true;
+        app.stopModal();
+      });
 
-          nibui.attachTargetAndAction(nibui.btnAddDict, function() {
-            // Add the word to the Dictionary.
-            // Use the NSSpellchecker method.
-            [[NSSpellChecker sharedSpellChecker] learnWord: misSpelledWord]
-            app.stopModal();
-          });
-          alert.runModal();
+      nibui.attachTargetAndAction(nibui.btnIgnoreAll, function(){
 
-          nibui.destroy();
+        //Ignore word for this document
+        [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: 0]
+        app.stopModal();
+      });
 
-        }
-      //}
+      nibui.attachTargetAndAction(nibui.btnAddDict, function() {
 
-	}
-  //Builds our little alert
-  //allWords = allWords + "\nFound "+misspellingcount+" misspellings in "+[layers count]+" text layers";
-  //[[NSApplication sharedApplication] displayDialog:allWords withTitle:"Spellcheck Whole Page"]
-  //sketch.alert("Found "+misspellingcount+" misspellings in "+[layers count]+" text layers", allWords)
+        // Add the word to the Dictionary.
+        [[NSSpellChecker sharedSpellChecker] learnWord: misSpelledWord]
+        app.stopModal();
+      });
+      alert.runModal();
+
+      nibui.destroy();
+
+    }
+  }
 }
