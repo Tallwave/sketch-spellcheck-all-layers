@@ -20,7 +20,7 @@ Here’s a screen capture of the plugin in action:
 Special thanks to
 
 - [Aby Nimbalkar](https://github.com/abynim), who's [select layers of type gist](https://gist.github.com/abynim/04f88d5e4fe47118bfe3#file-sketch-plugin-snippet-select-layers-of-type-js) started me off in creating this plugin
-- [Roman Nurik](https://github.com/romannurik) who's [Sketch Nib UI Template}(https://github.com/romannurik/Sketch-NibUITemplatePlugin) which provided the framework for the UI
+- [Roman Nurik](https://github.com/romannurik) who's [Sketch Nib UI Template](https://github.com/romannurik/Sketch-NibUITemplatePlugin) which provided the framework for the UI
 
 ## Next Steps:
 
