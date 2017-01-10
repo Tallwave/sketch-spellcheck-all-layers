@@ -4,10 +4,8 @@ function onRun(context) {
   var sketch = context.api();
   var doc = context.document;
   var app = NSApplication.sharedApplication();
-
-  //var documentTag = [NSSpellChecker uniqueSpellDocumentTag]
-  //log(documentTag);
   var language = [[NSSpellChecker sharedSpellChecker] language]
+
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
@@ -23,28 +21,23 @@ function onRun(context) {
   var stopChecking = false;
   while (layer = [loop nextObject]) {
     if(stopChecking){
-      break;
+      break; //If the user hits "Done", stop checking
     }
-    //while (notReady){
-
 
     //do spellcheck on each layer
     var aString = [layer stringValue]
     range = [[NSSpellChecker sharedSpellChecker] checkSpellingOfString:aString startingAt:0];
     if(range.length >0){
       //Select the layer
-      //[layer select:true byExpandingSelection:true]
       [layer select:true byExpandingSelection:false]
 
       var misSpelledWord = aString.substring(range.location, (range.location+range.length))
       allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
       misspellingcount ++;
+
       var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:0];
-      //[[NSSpellChecker sharedSpellChecker] updateSpellingPanelWithMisspelledWord:misSpelledWord] // Updates the spell checker window with the misspelled word. Since we can't update the text yet, this isn't helpful, so it's commented out.
 
-      //NOTE: There's a possibility we could use the getSelectionFromUser method from the Sketch Javascript API to give a list of options such as "skip, add to dictionary, replace with..."
-      //Documetntation here: http://developer.sketchapp.com/reference/api/class/api/Application.js~Application.html#instance-method-alert
-
+      //Build our alert
       var alert = NSAlert.alloc().init();
 
       alert.setMessageText('Spell Check Whole Page');
