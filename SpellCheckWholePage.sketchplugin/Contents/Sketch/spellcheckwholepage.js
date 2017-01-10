@@ -3,11 +3,10 @@
 function onRun(context) {
   var sketch = context.api();
   var doc = context.document;
+  var app = NSApplication.sharedApplication();
 
   var documentTag = [NSSpellChecker uniqueSpellDocumentTag]
   var language = [[NSSpellChecker sharedSpellChecker] language]
-  log("tag: "+ documentTag);
-  log("language: "+ language);
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
@@ -40,7 +39,6 @@ function onRun(context) {
       allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
       misspellingcount ++;
       var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:documentTag ];
-      log("guesses: "+ guesses);
       //[[NSSpellChecker sharedSpellChecker] updateSpellingPanelWithMisspelledWord:misSpelledWord] // Updates the spell checker window with the misspelled word. Since we can't update the text yet, this isn't helpful, so it's commented out.
 
       //NOTE: There's a possibility we could use the getSelectionFromUser method from the Sketch Javascript API to give a list of options such as "skip, add to dictionary, replace with..."
@@ -54,7 +52,6 @@ function onRun(context) {
       //alert.addButtonWithTitle('Cancel');
       //alert.setIcon(NSImage.alloc().initWithContentsOfFile(
       //    context.plugin.urlForResourceNamed('DialogIcon512.png').path()));
-
       var nibui = new NibUI(context,
           'UIBundle', 'SpellCheckWholePage',
           ['textMisSpelling', 'replaceComboBox', 'btnSkip', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
@@ -66,7 +63,6 @@ function onRun(context) {
           nibui.textFullText.stringValue = aString;
 
           //Put guesses into the combobox
-          log([[NSSpellChecker sharedSpellChecker] guessesForWordRange: range inString: aString language: language inSpellDocumentWithTag: documentTag ]);
           nibui.replaceComboBox.removeAllItems();
           nibui.replaceComboBox.addItemsWithObjectValues( guesses );
           nibui.replaceComboBox.selectItemAtIndex( 0 );
@@ -77,30 +73,33 @@ function onRun(context) {
             //Do text replace
             layer.setIsEditingText(true);
             layer.setStringValue(aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
-            log("replacing this string: "+[layer stringValue])
             layer.setIsEditingText(false);
-            log("with this one:" +aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
+            app.stopModal();
           });
 
           nibui.attachTargetAndAction(nibui.btnDone, function() {
             //nibui.exampleLogView.setHidden(nibui.exampleDisclosureButton.state() != NSOnState);
             // Stop!
             stopChecking = true;
+            app.stopModal();
           });
 
           nibui.attachTargetAndAction(nibui.btnIgnoreAll, function(){
             // Use spell checking API for this //https://developer.apple.com/reference/appkit/nsspellchecker?language=objc
             [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: documentTag]
+            app.stopModal();
           });
 
           nibui.attachTargetAndAction(nibui.btnSkip, function() {
             // Next!
+            app.stopModal();
           });
 
           nibui.attachTargetAndAction(nibui.btnAddDict, function() {
             // Add the word to the Dictionary.
             // Use the NSSpellchecker method.
             [[NSSpellChecker sharedSpellChecker] learnWord: misSpelledWord]
+            app.stopModal();
           });
           alert.runModal();
 
