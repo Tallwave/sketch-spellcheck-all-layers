@@ -5,7 +5,8 @@ function onRun(context) {
   var doc = context.document;
   var app = NSApplication.sharedApplication();
 
-  var documentTag = [NSSpellChecker uniqueSpellDocumentTag]
+  //var documentTag = [NSSpellChecker uniqueSpellDocumentTag]
+  //log(documentTag);
   var language = [[NSSpellChecker sharedSpellChecker] language]
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
@@ -38,7 +39,7 @@ function onRun(context) {
       var misSpelledWord = aString.substring(range.location, (range.location+range.length))
       allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
       misspellingcount ++;
-      var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:documentTag ];
+      var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:0];
       //[[NSSpellChecker sharedSpellChecker] updateSpellingPanelWithMisspelledWord:misSpelledWord] // Updates the spell checker window with the misspelled word. Since we can't update the text yet, this isn't helpful, so it's commented out.
 
       //NOTE: There's a possibility we could use the getSelectionFromUser method from the Sketch Javascript API to give a list of options such as "skip, add to dictionary, replace with..."
@@ -62,9 +63,10 @@ function onRun(context) {
 
           //Put guesses into the combobox
           nibui.replaceComboBox.removeAllItems();
-          nibui.replaceComboBox.addItemsWithObjectValues( guesses );
-          nibui.replaceComboBox.selectItemAtIndex( 0 );
-
+          if (guesses.length >0){
+            nibui.replaceComboBox.addItemsWithObjectValues( guesses );
+            nibui.replaceComboBox.selectItemAtIndex( 0 );
+          }
           //Set up our button functions
           nibui.attachTargetAndAction(nibui.btnReplace, function() {
             //context.document.showMessage('hey');
@@ -84,7 +86,7 @@ function onRun(context) {
 
           nibui.attachTargetAndAction(nibui.btnIgnoreAll, function(){
             // Use spell checking API for this //https://developer.apple.com/reference/appkit/nsspellchecker?language=objc
-            [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: documentTag]
+            [[NSSpellChecker sharedSpellChecker] ignoreWord: misSpelledWord inSpellDocumentWithTag: 0]
             app.stopModal();
           });
 
