@@ -6,6 +6,8 @@ function onRun(context) {
 
   var documentTag = [NSSpellChecker uniqueSpellDocumentTag]
   var language = [[NSSpellChecker sharedSpellChecker] language]
+  log("tag: "+ documentTag);
+  log("language: "+ language);
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
@@ -37,7 +39,8 @@ function onRun(context) {
       var misSpelledWord = aString.substring(range.location, (range.location+range.length))
       allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
       misspellingcount ++;
-      var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange: range inString: aString language: language inSpellDocumentWithTag: documentTag ];
+      var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:documentTag ];
+      log("guesses: "+ guesses);
       //[[NSSpellChecker sharedSpellChecker] updateSpellingPanelWithMisspelledWord:misSpelledWord] // Updates the spell checker window with the misspelled word. Since we can't update the text yet, this isn't helpful, so it's commented out.
 
       //NOTE: There's a possibility we could use the getSelectionFromUser method from the Sketch Javascript API to give a list of options such as "skip, add to dictionary, replace with..."
@@ -63,16 +66,20 @@ function onRun(context) {
           nibui.textFullText.stringValue = aString;
 
           //Put guesses into the combobox
-          log(guesses);
+          log([[NSSpellChecker sharedSpellChecker] guessesForWordRange: range inString: aString language: language inSpellDocumentWithTag: documentTag ]);
+          nibui.replaceComboBox.removeAllItems();
           nibui.replaceComboBox.addItemsWithObjectValues( guesses );
+          nibui.replaceComboBox.selectItemAtIndex( 0 );
 
           //Set up our button functions
           nibui.attachTargetAndAction(nibui.btnReplace, function() {
             //context.document.showMessage('hey');
             //Do text replace
             layer.setIsEditingText(true);
-            [layer stringValue] = aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem);
+            layer.setStringValue(aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
+            log("replacing this string: "+[layer stringValue])
             layer.setIsEditingText(false);
+            log("with this one:" +aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
           });
 
           nibui.attachTargetAndAction(nibui.btnDone, function() {
