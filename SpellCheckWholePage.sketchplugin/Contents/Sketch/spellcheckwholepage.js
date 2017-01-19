@@ -16,9 +16,9 @@ function onRun(context) {
 
 	// Loop through filtered layers and select them
 	var loop = [layers objectEnumerator], layer;
-  var allWords = "";
   var misspellingcount = 0;
   var stopChecking = false;
+  var madeAChange = false;
   while (layer = [loop nextObject]) {
     if(stopChecking){
       break; //If the user hits "Done", stop checking
@@ -27,14 +27,15 @@ function onRun(context) {
     //do spellcheck on each layer
     var aString = [layer stringValue]
     range = [[NSSpellChecker sharedSpellChecker] checkSpellingOfString:aString startingAt:0];
-    if(range.length >0){
+    while(range.length >0 ){
+      var cursorLoc=range.location+range.length;
+
       //Select the layer
       [layer select:true byExpandingSelection:false]
 
-      var misSpelledWord = aString.substring(range.location, (range.location+range.length))
-      allWords = allWords+"\nText: "+aString+"\nMisspelled Word: "+misSpelledWord+"\n";
       misspellingcount ++;
 
+      var misSpelledWord = aString.substring(range.location, (range.location+range.length))
       var guesses = [[NSSpellChecker sharedSpellChecker] guessesForWordRange:range inString:aString language:language inSpellDocumentWithTag:0];
 
       //Build our alert
@@ -56,17 +57,21 @@ function onRun(context) {
 
       //Put guesses into the combobox
       nibui.replaceComboBox.removeAllItems();
-      if (guesses.length >0){
-        nibui.replaceComboBox.addItemsWithObjectValues( guesses );
-        nibui.replaceComboBox.selectItemAtIndex( 0 );
+      if ( guesses ){
+        if (guesses.length >0){
+          nibui.replaceComboBox.addItemsWithObjectValues( guesses );
+          nibui.replaceComboBox.selectItemAtIndex( 0 );
+        }
       }
 
       //Set up our button functions
       nibui.attachTargetAndAction(nibui.btnReplace, function() {
-        //Do text replace
-        layer.setIsEditingText(true);
-        layer.setStringValue(aString.replace( misSpelledWord, nibui.replaceComboBox.objectValueOfSelectedItem()));
-        layer.setIsEditingText(false);
+        madeAChange=true;
+        //replace it in our string
+        //var newWord = nibui.replaceComboBox.objectValueOfSelectedItem();
+        var newWord = nibui.replaceComboBox.stringValue();
+        aString = aString.replace( misSpelledWord, newWord);
+        cursorLoc = range.location + newWord.length();
         app.stopModal();
       });
 
@@ -92,7 +97,33 @@ function onRun(context) {
       alert.runModal();
 
       nibui.destroy();
+      if(stopChecking){
+        break; //If the user hits "Done", stop checking
+      }
+      //Recheck the text for a misspelling (and loop again if there is one)
+      range = [[NSSpellChecker sharedSpellChecker] checkSpellingOfString:aString startingAt:cursorLoc];
 
+      if (range.location < cursorLoc ){
+        //Break out of the loop if the search is resetting to the beginning
+        break;
+      }
     }
+    //Do text replacement if we updated anything
+    if (madeAChange){
+      layer.setIsEditingText(true);
+      layer.setStringValue(aString);
+      layer.setIsEditingText(false);
+    }
+    //Reset
+    madeAChange = false;
+
   }
+  if (misspellingcount == 0){
+    doc.displayMessage("No Misspellings here!");
+  } else if (misspellingcount == 1 ){
+    doc.displayMessage(misspellingcount+ " misspelling found!");
+  } else {
+    doc.displayMessage(misspellingcount+ " misspellings found!");
+  }
+
 }
