@@ -24,6 +24,4 @@ Special thanks to
 
 ## Next Steps:
 
-There's a shortfall where it will only check each text layer for one misspelled word at a time, so a text layer with more than one misspelled word will only get checked for the first one. I'll work on this for 1.0.
-
-In the meantime, run the plugin multiple times until no mis-spellings are detected.
+Updating the UI to be more consistent with the system spellchecker UI.
