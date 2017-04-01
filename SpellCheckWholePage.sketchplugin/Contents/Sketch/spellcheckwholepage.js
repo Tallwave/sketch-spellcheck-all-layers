@@ -134,7 +134,7 @@ function onRun(context) {
           var thisOverride = NSMutableDictionary.dictionaryWithDictionary(mutableOverrides.objectForKey(k));
           for( var l = 0; l< thisOverride.allKeys().count(); l++){
             thisID = thisOverride.allKeys()[l];
-            if ( thisOverride[thisID].className() == "__NSCFString"){
+            if ( thisOverride[thisID].className().indexOf('String')>=0){
               //WHERE THE MAGIC HAPPENS! WE'VE FOUND A STRING!
             }
           }
