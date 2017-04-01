@@ -122,17 +122,26 @@ function onRun(context) {
   // MESSY! Simply duplicating the loop (need to make functions out of this)
   // Search symbols for misspellings too
 
-  var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
-		predicate = NSPredicate.predicateWithFormat("isSymbol == YES"),
-		layers = [scope filteredArrayUsingPredicate:predicate];
-
-	// Deselect current selection
-	[[doc currentPage] deselectAllLayers]
-
-	// Loop through filtered layers and select them
-	var loop = [layers objectEnumerator], layer;
-
-  while (layer = [loop nextObject]) {
+  var allSymbols = context.document.documentData().allSymbols();
+	for (var i = 0; i < allSymbols.count(); i++) {
+    var symbol = allSymbols[i];
+    var instances = symbol.allInstances()
+    for (var j = 0; j < instances.count(); j++){
+      var overrides = instances[j].overrides();
+      if(overrides){
+        var mutableOverrides = NSMutableDictionary.dictionaryWithDictionary(overrides);
+        for( var k = 0; k < mutableOverrides.count(); k++){
+          var thisOverride = NSMutableDictionary.dictionaryWithDictionary(mutableOverrides.objectForKey(k));
+          for( var l = 0; l< thisOverride.allKeys().count(); l++){
+            thisID = thisOverride.allKeys()[l];
+            if ( thisOverride[thisID].className() == "__NSCFString"){
+              //WHERE THE MAGIC HAPPENS! WE'VE FOUND A STRING!
+            }
+          }
+        }
+      }
+    }
+  }
     //We actually need to loop through the overrides themselves too. There's info here: http://sketchplugins.com/d/20-how-do-i-write-to-a-symbol-instance-override/6
     /* function executePopulateSymbol(instace, index) {
 
