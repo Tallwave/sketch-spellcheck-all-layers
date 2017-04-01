@@ -24,7 +24,7 @@ function onRun(context) {
 
     //do spellcheck on each layer
     var aString = [layer stringValue]
-    var spellingResult = spellcheckThis(aString);
+    var spellingResult = spellcheckThis(aString, context);
     //Do text replacement if we updated anything
     if (spellingResult.madeAChange){
       //Select the layer just for display purposes
@@ -54,7 +54,7 @@ function onRun(context) {
             thisID = thisOverride.allKeys()[l];
             if ( thisOverride[thisID].className().indexOf('String')>=0){
               //WHERE THE MAGIC HAPPENS! WE'VE FOUND A STRING!
-              var spellingResult = spellcheckThis(thisOverride[thisID]);
+              var spellingResult = spellcheckThis(thisOverride[thisID], context);
               //Do text replacement if we updated anything
               if (spellingResult.madeAChange){
                 madeAChange = true;
@@ -116,8 +116,9 @@ function onRun(context) {
 
 }
 
-function spellcheckThis( aString ){
+function spellcheckThis( aString, context ){
   var language = [[NSSpellChecker sharedSpellChecker] language]
+  var stopChecking = false;
   var misspellingcount = 0;
   var madeAChange=false;
   var range = [[NSSpellChecker sharedSpellChecker] checkSpellingOfString:aString startingAt:0];
