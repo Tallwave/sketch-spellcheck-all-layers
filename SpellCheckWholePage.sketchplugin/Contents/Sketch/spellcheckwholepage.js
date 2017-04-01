@@ -76,7 +76,7 @@ function onRun(context) {
         instances[j].applyOverrides_allSymbols_(mutableOverrides,false);
       }
     }
-  }
+
     //We actually need to loop through the overrides themselves too. There's info here: http://sketchplugins.com/d/20-how-do-i-write-to-a-symbol-instance-override/6
     /* function executePopulateSymbol(instace, index) {
 
@@ -200,5 +200,5 @@ function spellcheckThis( aString ){
     }
   }
   var spellcheckresult = {"corrected":aString, "madeAChange":madeAChange, "misspellingcount":misspellingcount, "stopChecking":stopChecking};
-  return spellcheckresult
+  return spellcheckresult;
 }
