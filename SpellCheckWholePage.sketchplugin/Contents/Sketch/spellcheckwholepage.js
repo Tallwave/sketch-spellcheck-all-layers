@@ -118,6 +118,7 @@ function onRun(context) {
 
 function spellcheckThis( aString, context ){
   var language = [[NSSpellChecker sharedSpellChecker] language]
+  var app = NSApplication.sharedApplication();
   var stopChecking = false;
   var misspellingcount = 0;
   var madeAChange=false;
