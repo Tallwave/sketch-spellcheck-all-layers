@@ -45,6 +45,7 @@ function onRun(context) {
     var instances = symbol.allInstances()
     for (var j = 0; j < instances.count(); j++){
       var overrides = instances[j].overrides();
+      var madeAChange = false;
       if(overrides){
         var mutableOverrides = NSMutableDictionary.dictionaryWithDictionary(overrides);
         for( var k = 0; k < mutableOverrides.count(); k++){
@@ -56,7 +57,9 @@ function onRun(context) {
               var spellingResult = spellcheckThis(thisOverride[thisID]);
               //Do text replacement if we updated anything
               if (spellingResult.madeAChange){
-
+                madeAChange = true;
+                // update the mutable dictionary
+                thisOverride.setObject_forKey(spellingResult.corrected,thisID);
               }
               stopChecking = spellingResult.stopChecking;
               misspellingcount = misspellingcount + spellingResult.misspellingcount;
@@ -66,6 +69,11 @@ function onRun(context) {
             }
           }
         }
+      }
+      // apply the overrides to the symbol instance
+      if (madeAChange){
+        // apply the overrides to the symbol instance
+        instances[j].applyOverrides_allSymbols_(mutableOverrides,false);
       }
     }
   }
