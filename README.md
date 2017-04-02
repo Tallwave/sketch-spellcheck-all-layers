@@ -5,6 +5,12 @@ Displays a basic panel that allows users to replace the misspelled word or add i
 
 Uses OSX's built-in spelling features and dictionary to do this.
 
+## Change Log
+
+### 1.1 Support for text within symbol overrides
+### 1.0 Support for correcting misspellings
+### 0.5 Detects and lists misspellings
+
 ## The problem
 Spell check isn't available for all text layers at a time. If you're using sketch as a replacement for illustrator or inDesign, you really miss the ability to automatically spell check everything everywhere.
 
