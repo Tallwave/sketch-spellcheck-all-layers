@@ -61,7 +61,6 @@ function onRun(context) {
                   // Update the mutable dictionary -- Basically, these are temporary object copies that we can make changes to, then apply them over the actual "immutable" overrides
                   thisOverride.setObject_forKey(spellingResult.corrected,thisID);
                   mutableOverrides.setObject_forKey(thisOverride,k);
-
                 }
                 stopChecking = spellingResult.stopChecking;
                 misspellingcount = misspellingcount + spellingResult.misspellingcount;
@@ -80,7 +79,7 @@ function onRun(context) {
           log("Override");
           log(mutableOverrides);
           log("Original");
-          //log(instances[j]);
+          log(instances[j]);
           log(instances[j].overrides());
           //instances[j].applyOverrides_allSymbols_(mutableOverrides,false);
           instances[j].applyOverridesFromSource_(mutableOverrides); //This appears to be how the function changed... https://github.com/abynim/Sketch-Headers/commit/2989452d5d53ae2dd2db562770f05e7a707077e2?diff=split
