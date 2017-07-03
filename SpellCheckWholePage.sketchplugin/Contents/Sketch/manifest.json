@@ -1,7 +1,7 @@
 {
     "name": "Spell Check Whole Page",
-    "identifier": "com.ethology-co.spellcheckwholepage",
-    "version": "1.1",
+    "identifier": "com.tallwave.spellcheckwholepage",
+    "version": "1.2.0",
     "description": "Spell Check the entire page",
     "authorEmail": "info@tallwave.com",
     "author": "Tallwave",

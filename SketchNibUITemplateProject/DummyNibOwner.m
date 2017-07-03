@@ -11,7 +11,8 @@
 @property IBOutlet NSButton *btnIgnoreAll;
 @property IBOutlet NSButton *btnAddDict;
 @property IBOutlet NSButton *btnDone;
-@property IBOutlet NSTextField *textFullText;
+//@property IBOutlet NSTextField *textFullText;
+@property IBOutlet NSTextView *textFullText;
 /* End of view bindings */
 
 
