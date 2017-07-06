@@ -7,6 +7,7 @@ Uses OSX's built-in spelling features and dictionary to do this.
 
 ## Change Log
 
+### 1.2.0 Bug fix (removing a deprecated function) and adding scrolling text view
 ### 1.1 Support for text within symbol overrides
 ### 1.0 Support for correcting misspellings
 ### 0.5 Detects and lists misspellings
@@ -15,7 +16,7 @@ Uses OSX's built-in spelling features and dictionary to do this.
 Spell check isn't available for all text layers at a time. If you're using sketch as a replacement for illustrator or inDesign, you really miss the ability to automatically spell check everything everywhere.
 
 ## Usage
-**To install it, simply [download the zip](https://github.com/ethology-co/sketch-spellcheck-all-layers/archive/master.zip) and double-click the “.sketchplugin” file.** You can access the plugin via the plugins menu. You’ll know its worked when you see the notification at the bottom of the screen.
+**To install it, simply [download the zip](https://github.com/tallwave/sketch-spellcheck-all-layers/archive/master.zip) and double-click the “.sketchplugin” file.** You can access the plugin via the plugins menu. You’ll know its worked when you see the notification at the bottom of the screen.
 
 Here’s a screen capture of the plugin in action:
 

@@ -11,7 +11,8 @@ function onRun(context) {
 		layers = [scope filteredArrayUsingPredicate:predicate];
 
 	// Deselect current selection
-	[[doc currentPage] deselectAllLayers]
+	//[[doc currentPage] deselectAllLayers]
+  // context.selection.clear();
 
 	// Loop through filtered layers and select them
 	var loop = [layers objectEnumerator], layer;
@@ -123,7 +124,8 @@ function spellcheckThis( aString, context ){
 
     //Set up our text
     nibui.textMisSpelling.stringValue = "Mispelling: "+ misSpelledWord;
-    nibui.textFullText.stringValue = aString;
+    //nibui.textFullText.stringValue = aString;
+    nibui.textFullText.setString(aString);
 
     //Put guesses into the combobox
     nibui.replaceComboBox.removeAllItems();
