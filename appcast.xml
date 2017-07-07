@@ -14,7 +14,18 @@
             </ul>
           ]]>
         </description>
-        <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/master.zip" sparkle:version="1.2.1" />
+        <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/1.2.1.zip" sparkle:version="1.2.1" />
+      </item>
+      <item>
+        <title>Version 1.2.2</title>
+        <description>
+          <![CDATA[
+            <ul>
+              <li>Testing versioning</li>
+            </ul>
+          ]]>
+        </description>
+        <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/1.2.2.zip" sparkle:version="1.2.2" />
       </item>
   </channel>
 </rss>

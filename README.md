@@ -7,6 +7,7 @@ Uses OSX's built-in spelling features and dictionary to do this.
 
 ## Change Log
 
+### 1.2.2 Checking auto-updating functionality
 ### 1.2.1 Add auto-update support
 ### 1.2.0 Bug fix (removing a deprecated function) and adding scrolling text view
 ### 1.1 Support for text within symbol overrides
