@@ -6,17 +6,6 @@
     <description>Spell Check Whole Page Sketch Plugin</description>
     <language>en</language>
       <item>
-        <title>Version 1.2.1</title>
-        <description>
-          <![CDATA[
-            <ul>
-              <li>Added appcast for automatic plugin updating</li>
-            </ul>
-          ]]>
-        </description>
-        <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/v1.2.1.zip" sparkle:version="1.2.1" />
-      </item>
-      <item>
         <title>Version 1.2.2</title>
         <description>
           <![CDATA[
@@ -27,5 +16,17 @@
         </description>
         <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/v1.2.2.zip" sparkle:version="1.2.2" />
       </item>
+      <item>
+        <title>Version 1.2.1</title>
+        <description>
+          <![CDATA[
+            <ul>
+              <li>Added appcast for automatic plugin updating</li>
+            </ul>
+          ]]>
+        </description>
+        <enclosure url="https://github.com/Tallwave/sketch-spellcheck-all-layers/archive/v1.2.1.zip" sparkle:version="1.2.1" />
+      </item>
+
   </channel>
 </rss>
