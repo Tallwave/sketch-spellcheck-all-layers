@@ -8,9 +8,7 @@ function onRun(context) {
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
-    symbolPredicate = NSPredicate.predicateWithFormat("(className == %@)", "MSSymbolInstance"),
-		layers = [scope filteredArrayUsingPredicate:predicate],
-    symbols = [scope filteredArrayUsingPredicate:symbolPredicate];
+		layers = [scope filteredArrayUsingPredicate:predicate]
 
 	// Deselect current selection
 	//[[doc currentPage] deselectAllLayers]
