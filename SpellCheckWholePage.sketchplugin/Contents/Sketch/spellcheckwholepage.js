@@ -1,19 +1,13 @@
 @import 'sketch-nibui.js';
 
 function onRun(context) {
-  var sketch = context.api();
   var doc = context.document;
-  var app = NSApplication.sharedApplication();
   var UI = require('sketch/ui');
 
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
 		layers = [scope filteredArrayUsingPredicate:predicate]
-
-	// Deselect current selection
-	//[[doc currentPage] deselectAllLayers]
-  // context.selection.clear();
 
 	// Loop through filtered layers and select them
 	var loop = [layers objectEnumerator], layer;
@@ -41,7 +35,7 @@ function onRun(context) {
 
   }
   if(!stopChecking){
-    var allSymbols = context.document.documentData().allSymbols();
+    var allSymbols = doc.documentData().allSymbols();
     //Won't work until we convert to the full-javascript API.
     //var pageLayerIDs = doc.currentPage.children.map(function(value){
     // return(value.id);
@@ -76,8 +70,8 @@ function onRun(context) {
               misspellingcount = misspellingcount + spellingResult.misspellingcount;
               if(stopChecking){
                 //If the user hits "Done", stop checking--set all the for variables to their exit conditions
+                i=allSymbols.count();
                 j=instances.count();
-                k=mutableOverrides.count();
                 l=mutableOverrides.allKeys().count();
               }
             }
@@ -122,8 +116,6 @@ function spellcheckThis( aString, context ){
 
     alert.setMessageText('Spell Check Whole Page');
     alert.addButtonWithTitle('Skip'); //We must have a button here, so Skip makes the most sense.
-    //alert.setIcon(NSImage.alloc().initWithContentsOfFile(
-    //    context.plugin.urlForResourceNamed('DialogIcon512.png').path()));
     var nibui = new NibUI(context,
       'UIBundle', 'SpellCheckWholePage',
       ['textMisSpelling', 'replaceComboBox', 'btnReplace','btnIgnoreAll','btnAddDict','btnDone','textFullText']);
@@ -132,7 +124,6 @@ function spellcheckThis( aString, context ){
 
     //Set up our text
     nibui.textMisSpelling.stringValue = "Mispelling: "+ misSpelledWord;
-    //nibui.textFullText.stringValue = aString;
     nibui.textFullText.setString(aString);
 
     //Put guesses into the combobox
@@ -148,7 +139,6 @@ function spellcheckThis( aString, context ){
     nibui.attachTargetAndAction(nibui.btnReplace, function() {
       madeAChange=true;
       //replace it in our string
-      //var newWord = nibui.replaceComboBox.objectValueOfSelectedItem();
       var newWord = nibui.replaceComboBox.stringValue();
       aString = aString.replace( misSpelledWord, newWord);
       cursorLoc = range.location + newWord.length();
