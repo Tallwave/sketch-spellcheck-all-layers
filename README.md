@@ -7,6 +7,7 @@ Uses macOS's built-in spelling features and dictionary to do this.
 
 ## Change Log
 
+### 1.3.2 Fixed bug around the done button working inconsistently
 ### 1.3.1 Bug fix misspelling counter message wasn't showing
 ### 1.3.0 Bug fix to support text within symbol overrides
 ### 1.2.2 Checking auto-updating functionality
