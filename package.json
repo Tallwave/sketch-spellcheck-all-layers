@@ -5,7 +5,7 @@
   "engines": {
     "sketch": ">=49.0"
   },
-  "repository": "github:Tallwave/sketch-spellcheck-all-layers.git",
+  "repository": "github.com/Tallwave/sketch-spellcheck-all-layers",
   "skpm": {
     "name": "Spell Check Whole Page",
     "manifest": "src/manifest.json",
