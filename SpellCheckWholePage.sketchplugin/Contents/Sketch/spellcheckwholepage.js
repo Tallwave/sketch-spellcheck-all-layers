@@ -4,11 +4,12 @@ function onRun(context) {
   var sketch = context.api();
   var doc = context.document;
   var app = NSApplication.sharedApplication();
+  var UI = require('sketch/ui');
 
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
 		predicate = NSPredicate.predicateWithFormat("(className == %@)", "MSTextLayer"),
-		layers = [scope filteredArrayUsingPredicate:predicate];
+		layers = [scope filteredArrayUsingPredicate:predicate]
 
 	// Deselect current selection
 	//[[doc currentPage] deselectAllLayers]
@@ -41,36 +42,43 @@ function onRun(context) {
   }
   if(!stopChecking){
     var allSymbols = context.document.documentData().allSymbols();
+    //Won't work until we convert to the full-javascript API.
+    //var pageLayerIDs = doc.currentPage.children.map(function(value){
+    // return(value.id);
+    //});
+    //console.log(pageLayerIDs);
     for (var i = 0; i < allSymbols.count(); i++) {
       var symbol = allSymbols[i];
       var instances = symbol.allInstances()
+      //Won't work until we convert to the full-javascript API.
+      //var instances = symbol.allInstances().filter(
+      //  function(e) {
+      //    return this.indexOf(e.id) >= 0;
+      //  }, pageLayerIDs
+      //);
       for (var j = 0; j < instances.count(); j++){
         var overrides = instances[j].overrides();
         var madeAChange = false;
         if(overrides){
           var mutableOverrides = NSMutableDictionary.dictionaryWithDictionary(overrides);
-          for( var k = 0; k < mutableOverrides.count(); k++){
-            var thisOverride = NSMutableDictionary.dictionaryWithDictionary(mutableOverrides.objectForKey(k));
-            for( var l = 0; l< thisOverride.allKeys().count(); l++){
-              thisID = thisOverride.allKeys()[l];
-              if ( thisOverride[thisID].className().indexOf('String')>=0){
-                //WHERE THE MAGIC HAPPENS! WE'VE FOUND A STRING!
-                var spellingResult = spellcheckThis(thisOverride[thisID], context);
-                //Do text replacement if we updated anything
-                if (spellingResult.madeAChange){
-                  madeAChange = true;
-                  // Update the mutable dictionary -- Basically, these are temporary object copies that we can make changes to, then apply them over the actual "immutable" overrides
-                  thisOverride.setObject_forKey(spellingResult.corrected,thisID);
-                  mutableOverrides.setObject_forKey(thisOverride,k);
-                }
-                stopChecking = spellingResult.stopChecking;
-                misspellingcount = misspellingcount + spellingResult.misspellingcount;
-                if(stopChecking){
-                  //If the user hits "Done", stop checking--set all the for variables to their exit conditions
-                  j=instances.count();
-                  k=mutableOverrides.count();
-                  l=thisOverride.allKeys().count();
-                }
+          for( var l = 0; l< mutableOverrides.allKeys().count(); l++){
+            thisID = mutableOverrides.allKeys()[l];
+            if ( mutableOverrides[thisID].className().indexOf('String')>=0){
+              //WHERE THE MAGIC HAPPENS! WE'VE FOUND A STRING!
+              var spellingResult = spellcheckThis(mutableOverrides[thisID], context);
+              //Do text replacement if we updated anything
+              if (spellingResult.madeAChange){
+                madeAChange = true;
+                // Update the mutable dictionary -- Basically, these are temporary object copies that we can make changes to, then apply them over the actual "immutable" overrides
+                mutableOverrides.setObject_forKey(spellingResult.corrected,thisID);
+              }
+              stopChecking = spellingResult.stopChecking;
+              misspellingcount = misspellingcount + spellingResult.misspellingcount;
+              if(stopChecking){
+                //If the user hits "Done", stop checking--set all the for variables to their exit conditions
+                j=instances.count();
+                k=mutableOverrides.count();
+                l=mutableOverrides.allKeys().count();
               }
             }
           }
@@ -78,18 +86,18 @@ function onRun(context) {
         // apply the overrides to the symbol instance
         if (madeAChange){
           // apply the overrides to the symbol instance
-          instances[j].applyOverrides_allSymbols_(mutableOverrides,false);
+          instances[j].overrides = mutableOverrides;
         }
       }
     }
   }
 
   if (misspellingcount == 0){
-    doc.displayMessage("No Misspellings here!");
+    UI.message("No Misspellings here!");
   } else if (misspellingcount == 1 ){
-    doc.displayMessage(misspellingcount+ " misspelling found!");
+    UI.message(misspellingcount + " misspelling found!");
   } else {
-    doc.displayMessage(misspellingcount+ " misspellings found!");
+    UI.message(misspellingcount + " misspellings found!");
   }
 
 }
