@@ -1,9 +1,8 @@
 @import 'sketch-nibui.js';
 
 function onRun(context) {
-  var sketch = context.api();
+  var UI = require('sketch/ui');
   var doc = context.document;
-  var app = NSApplication.sharedApplication();
 
   // Filter layers using NSPredicate
 	var scope = (typeof containerLayer !== 'undefined') ? [containerLayer children] : [[doc currentPage] children],
@@ -40,17 +39,31 @@ function onRun(context) {
 
   }
   if(!stopChecking){
-    var allSymbols = context.document.documentData().allSymbols();
+    var allSymbols = doc.documentData().allSymbols();
+    //Won't work until we convert to the full-javascript API.
+    /* var pageLayerIDs = doc.currentPage.children.map(function(value){
+      return(value.id);
+    });*/
+    //console.log(pageLayerIDs);
     for (var i = 0; i < allSymbols.count(); i++) {
       var symbol = allSymbols[i];
-      var instances = symbol.allInstances()
+
+      //Won't work until we convert to the full-javascript API.
+      /*var instances = symbol.allInstances().filter(
+        function(e) {
+          return this.indexOf(e.id) >= 0;
+        }, pageLayerIDs
+      );*/
+
+      var instances = symbol.allInstances();
+
       for (var j = 0; j < instances.count(); j++){
         var overrides = instances[j].overrides();
         var madeAChange = false;
         if(overrides){
           var mutableOverrides = NSMutableDictionary.dictionaryWithDictionary(overrides);
           for( var k = 0; k < mutableOverrides.count(); k++){
-            var thisOverride = NSMutableDictionary.dictionaryWithDictionary(mutableOverrides.objectForKey(k));
+            var thisOverride = NSMutableDictionary.dictionaryWithDictionary(mutableOverrides.objectForKey(k)); //This is why symbol override spell checking is broken.
             for( var l = 0; l< thisOverride.allKeys().count(); l++){
               thisID = thisOverride.allKeys()[l];
               if ( thisOverride[thisID].className().indexOf('String')>=0){
@@ -85,11 +98,11 @@ function onRun(context) {
   }
 
   if (misspellingcount == 0){
-    doc.displayMessage("No Misspellings here!");
+    UI.message('No Misspellings here!');
   } else if (misspellingcount == 1 ){
-    doc.displayMessage(misspellingcount+ " misspelling found!");
+    UI.message(misspellingcount + ' misspelling found!');
   } else {
-    doc.displayMessage(misspellingcount+ " misspellings found!");
+    UI.message(misspellingcount+ ' misspellings found!');
   }
 
 }
