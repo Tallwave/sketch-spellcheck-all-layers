@@ -39,23 +39,21 @@ function onRun(context) {
 
   }
   if(!stopChecking){
-    var allSymbols = doc.documentData().allSymbols();
+    var allSymbols = context.document.documentData().allSymbols();
     //Won't work until we convert to the full-javascript API.
-    /* var pageLayerIDs = doc.currentPage.children.map(function(value){
-      return(value.id);
-    });*/
+    //var pageLayerIDs = doc.currentPage.children.map(function(value){
+    // return(value.id);
+    //});
     //console.log(pageLayerIDs);
     for (var i = 0; i < allSymbols.count(); i++) {
       var symbol = allSymbols[i];
-
-      //Won't work until we convert to the full-javascript API.
-      /*var instances = symbol.allInstances().filter(
-        function(e) {
-          return this.indexOf(e.id) >= 0;
-        }, pageLayerIDs
-      );*/
-
       var instances = symbol.allInstances();
+      //Won't work until we convert to the full-javascript API.
+      //var instances = symbol.allInstances().filter(
+      //  function(e) {
+      //    return this.indexOf(e.id) >= 0;
+      //  }, pageLayerIDs
+      //);
 
       for (var j = 0; j < instances.count(); j++){
         var overrides = instances[j].overrides();
@@ -98,11 +96,11 @@ function onRun(context) {
   }
 
   if (misspellingcount == 0){
-    UI.message('No Misspellings here!');
+    UI.message("No Misspellings here!");
   } else if (misspellingcount == 1 ){
-    UI.message(misspellingcount + ' misspelling found!');
+    UI.message(misspellingcount + " misspelling found!");
   } else {
-    UI.message(misspellingcount+ ' misspellings found!');
+    UI.message(misspellingcount + " misspellings found!");
   }
 
 }
